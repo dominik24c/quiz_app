@@ -1,0 +1,19 @@
+<header id="nav-header">
+    <div class="brand">
+        <a href="{{ path('home') }}">
+            <img id="brand" src="{{ asset('build/images/quiz.png') }}">
+        </a>
+    </div>
+    <nav id="navbar">
+        <ul>
+            <li><a href="{{ path('contact') }}">Contact</a></li>
+            {% if is_granted('IS_AUTHENTICATED_FULLY')%}
+                <li><a href="{{ path('quiz') }}">Quiz</a></li>
+                <li><a href="{{ path('app_logout') }}">Logout</a></li>
+            {% else %}
+                <li><a href="{{ path('app_login') }}">Login</a></li>
+                <li><a href="{{ path('app_register') }}">Register</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>

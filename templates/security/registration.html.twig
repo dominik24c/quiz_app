@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register!{% endblock %}
+
+{% block body %}
+    <h2>Registration</h2>
+        {{ form_start(form)}}
+            {{ form_widget(form) }}
+            {% include "layout/recaptcha.html.twig" %}
+        {{ form_end(form) }}
+{% endblock %}

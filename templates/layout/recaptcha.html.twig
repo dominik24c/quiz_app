@@ -1,0 +1,15 @@
+<script src="https://www.google.com/recaptcha/api.js"></script>
+<script>
+    function onSubmit(token) {
+        document.getElementById("auth-form").submit();
+    }
+</script>
+<style>
+    .grecaptcha-badge {
+        visibility: hidden;
+    }
+</style>
+<button class="g-recaptcha"
+        data-sitekey="{{ google_site_key }}"
+        data-callback='onSubmit'
+        data-action='submit'>Submit</button>
