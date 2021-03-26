@@ -1,12 +1,26 @@
+/*
+colors
+f6f6f6
+c7ffd8
+98ded9
+161d6f
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
 *{
     margin: 0;
 }
 html {
+    height: 100%;
     box-sizing: border-box;
 }
 
 body {
+    height: 100%;
     background-color: #c7ffd8;
+    color: #000000;
+    font-family: 'Poppins', sans-serif;;
 }
 
 #nav-header{
@@ -15,6 +29,8 @@ body {
 }
 #navbar{
     display: inline-block;
+    width: calc(100% - 50px);
+    text-align: right;
 }
 
 #navbar > ul{
@@ -54,10 +70,119 @@ img#brand{
     width: 100%;
     margin-top: -5px;
 }
-/*
-colors
-f6f6f6
-c7ffd8
-98ded9
-161d6f
-*/
+
+#container{
+    width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    background-color: #2d8db6;
+    padding: 0.5rem 0;
+    /*height: calc(100vh - 0.5rem - 0.25rem - 44.5px - 2px);*/
+}
+@media only screen and (max-width: 800px) {
+    #container {
+        width: 100%;
+    }
+}
+
+h1,h2,h3,h4,p{
+    color: inherit;
+}
+
+.button{
+    background-color: #161d6f;
+    color: white;
+    padding: 0.35rem 0.8rem;
+    font-size: 1.25rem;
+    border: 2px solid white;
+    border-radius: 5px;
+    outline: none;
+}
+
+.button:hover{
+    cursor: pointer;
+    background-color: #98ded9;
+    border-color: #fc5959;
+    color: #fc5959;
+}
+
+#auth-form{
+    width: 70%;
+    margin-right: auto;
+    margin-left: auto;
+}
+@media only screen and (max-width:450px) {
+    #auth-form{
+        width:100%;
+        margin: 0 1.5rem;
+    }
+}
+.form-control{
+    margin: 0.6rem 0;
+}
+
+.form-control label{
+    display: block;
+    font-size: 1.1rem;
+    text-align: left;
+}
+
+.form-control input[type="text"],
+.form-control input[type="email"],
+.form-control input[type="password"]{
+    width: 100%;
+    font-family: inherit;
+    outline:none;
+    border: 1px solid #161d6f;
+    border-radius: 2px;
+}
+
+
+.form-control input[type="checkbox"]{
+
+    vertical-align: middle;
+}
+
+.agree-terms label{
+    font-size: 14px;
+    display: inline-block;
+}
+
+.form-error{
+    padding: 0.5rem 2rem;
+    color: red;
+    font-size: 14px;
+}
+
+.form-error ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.quiz{
+    margin: 2rem;
+    padding: 1rem;
+    text-align: left;
+    border: 2px solid white;
+    border-radius: 3px;
+}
+
+.quiz > h3{
+    color: #413d3d;
+    text-align: center;
+}
+
+.quiz > div > b{
+    color: #B0413E;
+}
+
+.quiz > div{
+    display: inline-block;
+    width: calc(50% - 3rem);
+}
+
+.quiz >div:last-child{
+    text-align: right;
+}

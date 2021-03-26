@@ -1,7 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}Quiz app{% endblock %}
 
 {% block body %}
-    <h1>Home</h1>
+    <h1>The Most popular quizzes:</h1>
+    {% for quiz in quizzes %}
+        <div class="quiz">
+            <h3>{{ quiz.title }}</h3>
+            <p>{{ quiz.description | slice(0,200) ~ '...' }}</p>
+            <br>
+            <div>Category: <b>{{ quiz.category }}</b></div>
+            <div>Solved quizzes by user: <b>{{ quiz.solved_quizzes }}</b></div>
+        </div>
+    {% endfor %}
 {% endblock %}

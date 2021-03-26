@@ -95,9 +95,12 @@ class AuthController extends AbstractController
             }
         }
 
+        $keys = array('firstName','lastName','nick','email','password','passwordConfirmation','agreeTerms');
+
         return $this->render('security/registration.html.twig',[
             'form'=>$form->createView(),
-            'google_site_key'=>$this->getParameter('google_recaptcha_site_key')
+            'google_site_key'=>$this->getParameter('google_recaptcha_site_key'),
+            'form_keys' => $keys
         ]);
     }
 }

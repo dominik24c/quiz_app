@@ -3,9 +3,19 @@
 {% block title %}Register!{% endblock %}
 
 {% block body %}
-    <h2>Registration</h2>
+    <h1>Registration</h1>
         {{ form_start(form)}}
-            {{ form_widget(form) }}
-            {% include "layout/recaptcha.html.twig" %}
+        {% for key in form_keys %}
+            <div class="form-control {{ key=='agreeTerms'? 'agree-terms':'' }}">
+                {{ form_label(form[key]) }}
+                {{ form_widget(form[key]) }}
+                <div class="form-error">{{ form_errors(form[key]) }}</div>
+            </div>
+        {% endfor %}
+
+{#            {{ form_widget(form) }}#}
+
+
+            {% include "layout/recaptcha.html.twig" with {'button_name':'Register'}%}
         {{ form_end(form) }}
 {% endblock %}

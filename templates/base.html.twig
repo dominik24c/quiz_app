@@ -17,6 +17,9 @@
     </head>
     <body>
         {% include 'layout/navbar.html.twig' %}
-        {% block body %}{% endblock %}
+        <div id="container">
+            {% block body %}
+            {% endblock %}
+        </div>
     </body>
 </html>

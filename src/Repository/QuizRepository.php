@@ -3,9 +3,11 @@
 namespace App\Repository;
 
 use App\Entity\Quiz;
+use App\Entity\Solution;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -21,6 +23,20 @@ class QuizRepository extends ServiceEntityRepository
         parent::__construct($registry, Quiz::class);
     }
 
+    public function getTheMostPopularQuizzes($numberOfQuizzes)
+    {
+        return $this->getEntityManager()
+            ->createQueryBuilder()
+            ->select('q.id, q.title, q.description,c.name AS category, COUNT(q.id) AS solved_quizzes')
+            ->from(Solution::class,'s')
+            ->join('s.quiz','q')
+            ->join('q.category','c')
+            ->groupBy('q.id')
+            ->orderBy('solved_quizzes','ASC')
+            ->setMaxResults($numberOfQuizzes)
+            ->getQuery()
+            ->getScalarResult();
+    }
     // /**
     //  * @return Quiz[] Returns an array of Quiz objects
     //  */
