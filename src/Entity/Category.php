@@ -28,6 +28,12 @@ class Category
         $this->quizzes = new ArrayCollection();
     }
 
+    public function __toString(): string
+    {
+        return $this->name;
+    }
+
+
     /**
      * @return mixed
      */

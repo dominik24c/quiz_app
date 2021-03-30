@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Your Quizzes{% endblock %}
+
+{% block body %}
+    <h1>Your Quizzes</h1>
+    {% for quiz in quizzes %}
+        <div class="quiz">
+            <h3>{{ quiz.title }}</h3>
+            <p>{{ quiz.description | slice(0,200) ~ '...' }}</p>
+            <br>
+            <div class="quiz-actions">
+                <button class="button">Edit</button>
+                <button class="button">Delete</button>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

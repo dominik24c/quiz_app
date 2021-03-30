@@ -31,7 +31,7 @@ class RegistrationType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
-            'attr'=>['id'=>'auth-form']
+            'attr'=>['id'=>'form']
         ]);
     }
 }

@@ -107,13 +107,13 @@ h1,h2,h3,h4,p{
     color: #fc5959;
 }
 
-#auth-form{
+#form{
     width: 70%;
     margin-right: auto;
     margin-left: auto;
 }
 @media only screen and (max-width:450px) {
-    #auth-form{
+    #form{
         width:100%;
         margin: 0 1.5rem;
     }
@@ -131,16 +131,34 @@ h1,h2,h3,h4,p{
 .form-control input[type="text"],
 .form-control input[type="email"],
 .form-control input[type="password"]{
-    width: 100%;
+    width: 99%;
     font-family: inherit;
     outline:none;
     border: 1px solid #161d6f;
     border-radius: 2px;
 }
 
+.form-control textarea {
+    height: 10em;
+    width: 100%;
+    font-family: inherit;
+}
+
+.form-control select{
+    vertical-align: middle;
+}
 
 .form-control input[type="checkbox"]{
+    vertical-align: middle;
+}
 
+.display-inline-block{
+    text-align: left;
+}
+.display-inline-block > label,
+.display-inline-block > input[type="datetime-local"],
+.display-inline-block > input[type="checkbox"] {
+    display: inline-block;
     vertical-align: middle;
 }
 
@@ -182,7 +200,74 @@ h1,h2,h3,h4,p{
     display: inline-block;
     width: calc(50% - 3rem);
 }
-
+button.delete-btn{
+    font-weight: bold;
+    color:red;
+    background-color: inherit;
+    outline:none;
+    border: 2px solid red;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 2px;
+    margin-right: 2px;
+}
 .quiz >div:last-child{
     text-align: right;
+}
+
+div.quiz-actions{
+    width: 100%;
+}
+
+div.quiz-actions > button{
+    margin-left: 0.4rem;
+}
+
+div.question{
+    border: 2px solid #161d6f;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    position: relative;
+}
+
+.answers > .answer > .form-control > label{
+    font-size: 0.9rem;
+}
+
+.answer{
+    position: relative;
+    padding: 0.5rem;
+    border: 1px solid #161d6f;
+    margin-bottom: 0.5rem;
+}
+
+.hidden{
+    visibility: hidden;
+    margin-bottom: 0.5rem;
+}
+
+button.add-btn{
+    background-color: #161d6f;
+    color: white;
+    padding: 0.35rem 0.8rem;
+    font-size: 1rem;
+    border: 2px solid white;
+    border-radius: 5px;
+    outline: none;
+    cursor: pointer;
+}
+
+button.add-btn:hover{
+    background-color: #98ded9;
+    border-color: #fc5959;
+    color: #fc5959;
+}
+#add-question-btn{
+    margin-bottom: 0.8rem;
+}
+
+p.form-error{
+    color: red;
 }

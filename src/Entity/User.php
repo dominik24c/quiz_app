@@ -193,7 +193,7 @@ class User implements UserInterface
     {
         if (!$this->solutions->contains($solution)) {
             $this->solutions[] = $solution;
-            $solution->setUsero($this);
+            $solution->setUser($this);
         }
 
         return $this;
@@ -203,8 +203,8 @@ class User implements UserInterface
     {
         if ($this->solutions->removeElement($solution)) {
             // set the owning side to null (unless already changed)
-            if ($solution->getUsero() === $this) {
-                $solution->setUsero(null);
+            if ($solution->getUser() === $this) {
+                $solution->setUser(null);
             }
         }
 

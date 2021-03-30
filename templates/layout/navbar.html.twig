@@ -6,11 +6,13 @@
     </div>
     <nav id="navbar">
         <ul>
-            <li><a href="{{ path('contact') }}">Contact</a></li>
             {% if is_granted('IS_AUTHENTICATED_FULLY')%}
                 <li><a href="{{ path('quiz') }}">Quiz</a></li>
+                <li><a href="{{ path('user_quizzes') }}">Your Quizzes</a></li>
+                <li><a href="{{ path('create_quiz') }}">Create Quiz</a></li>
                 <li><a href="{{ path('app_logout') }}">Logout</a></li>
             {% else %}
+                <li><a href="{{ path('contact') }}">Contact</a></li>
                 <li><a href="{{ path('app_login') }}">Login</a></li>
                 <li><a href="{{ path('app_register') }}">Register</a></li>
             {% endif %}

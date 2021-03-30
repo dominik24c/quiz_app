@@ -11,7 +11,23 @@ import './styles/app.css';
 // start the Stimulus application
 import './bootstrap';
 
-import $ from 'jquery';
-import axios from "axios";
+import Question from "./js/question";
+import Quiz from "./js/quiz";
 
-console.log('hello there!');
+class App{
+    constructor() {
+        this.question = null;
+        this.quiz = null;
+    }
+    init(){
+        // console.log(window.location.pathname);
+        if(window.location.pathname==="/user/quizzes/create"){
+            this.question = new Question();
+            this.quiz = new Quiz();
+        }
+
+    }
+}
+
+const app = new App();
+app.init();

@@ -4,7 +4,7 @@
 {% block body %}
 
     <h1>Please sign in</h1>
-<form id="auth-form" method="post">
+<form id="form" method="post">
     {% for msg in app.flashes('registration-success') %}
         <div class="success">
             <p>{{ msg }}</p>

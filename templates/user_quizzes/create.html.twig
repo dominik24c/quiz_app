@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Create Quiz{% endblock %}
+
+{% block body %}
+    <h1>Create Quiz</h1>
+    <form action="" method="POST" id="form">
+        <div id="quiz">
+            <div class="form-control">
+                <label for="title">Title:</label>
+                <input type="text" name="title" id="title">
+            </div>
+            <div class="form-control">
+                <label for="description">Description:</label>
+                <textarea name="description" id="description"></textarea>
+            </div>
+            <div class="form-control display-inline-block">
+                <label for="category">Category:</label>
+                <select name="category" id="category">
+                    {% for category in categories %}
+                        <option value="{{ category }}">{{ category|capitalize }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-control display-inline-block">
+                <label for="expired_at">Date of expiration:</label>
+                <input type="datetime-local" id="expired_at" name="expired_at">
+            </div>
+            <div id="questions">
+            </div>
+            <div id="question-error"></div>
+            <button type="button" class="add-btn" id="add-question-btn">Add Question</button>
+        </div>
+        <input type="hidden" name="token" value="{{ csrf_token('create-question') }}"/>
+        <button class="button" type="submit" id="create-quiz-btn">Create</button>
+    </form>
+{% endblock %}
