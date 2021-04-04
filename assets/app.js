@@ -13,19 +13,32 @@ import './bootstrap';
 
 import Question from "./js/question";
 import Quiz from "./js/quiz";
+import UserQuizzes from "./js/user-quizzes";
 
 class App{
     constructor() {
         this.question = null;
         this.quiz = null;
     }
+
     init(){
-        // console.log(window.location.pathname);
-        if(window.location.pathname==="/user/quizzes/create"){
+        const edit_route_regex = /^\/user\/quizzes\/.+\/edit$/;
+        console.log(edit_route_regex.test(window.location.pathname))
+        if(window.location.pathname === "/user/quizzes/create" ){
             this.question = new Question();
             this.quiz = new Quiz();
         }
-
+        else if(edit_route_regex.test(window.location.pathname)){
+            this.question = new Question();
+            this.quiz = new Quiz(Quiz.EDIT_QUIZ);
+            this.question.getQuestions();
+        }
+        else if(window.location.pathname === "/user/quizzes"){
+            UserQuizzes.addEditAndDeleteBtnEventHandler()
+        }
+        //remove query param crate_quiz
+        const urlPath = window.location.protocol + "//" + window.location.host + window.location.pathname;
+        window.history.pushState({ path: urlPath }, '', urlPath);
     }
 }
 

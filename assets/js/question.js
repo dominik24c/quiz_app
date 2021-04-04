@@ -1,23 +1,24 @@
 import Answer from "./answer";
 import Validator from "./validator";
+import axios from "axios";
 
 export default class Question{
     constructor() {
-        $('#add-question-btn').click(this.addQuestion);
+        $('#add-question-btn').click(this.addQuestion.bind(this,null));
     }
 
-    addQuestion(){
+    addQuestion(questionObj=null){
         // create question div
         const question=`
             <div class="question">
                <button type="button" class="delete-question-btn delete-btn">x</button>
                <div class="form-control">
                     <label for="question">Question:</label>
-                    <input type="text" name="question">
+                    <input type="text" name="question" value="${questionObj ? questionObj.question : ""}">
                 </div>
                 <div class="form-control">
                     <label for="points">Points:</label>
-                    <input type="text" name="points" placeholder="1 - 9999">
+                    <input type="text" name="points" placeholder="1 - 9999" value="${questionObj ? questionObj.points : ""}">
                 </div>
                 <div class="answers">
                 </div>
@@ -40,6 +41,31 @@ export default class Question{
         Validator.addOnFocusRemoveFormError(lastQuestion.find('input[name="points"]'),'form-error');
         $('#question-error').html('');
 
-        new Answer(lastQuestion);
+        if(questionObj){
+            console.log(questionObj)
+            const answer = new Answer(lastQuestion);
+            questionObj.answers.forEach(answerObj=>{
+                // console.log(answerObj)
+                answer.addAnswer(lastQuestion,answerObj)
+            });
+        }
+        else{
+            new Answer(lastQuestion);
+        }
+    }
+
+    getQuestions()
+    {
+       axios.get(`${window.location.pathname}/quiz-data`)
+           .then(response=> {
+               console.log(response.data);
+               const questions = response.data.questions;
+               questions.forEach(question=>{
+                    this.addQuestion(question);
+               });
+               $('#loading-spinner').hide();
+           }).catch(error=>{
+               console.log(error);
+       })
     }
 }

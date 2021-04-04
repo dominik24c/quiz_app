@@ -6,6 +6,8 @@ use App\Repository\QuizRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=QuizRepository::class)
@@ -16,29 +18,41 @@ class Quiz
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("edit_quiz")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\NotNull
+     * @Assert\NotBlank
+     * @Assert\Length(min=6,max=100)
+     * @Groups("quiz")
      */
     private $title;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotNull
+     * @Assert\NotBlank
+     * @Assert\Length(min=20)
+     * @Groups("quiz")
      */
     private $description;
 
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="quizzes")
      * @ORM\JoinColumn(name="category",referencedColumnName="name")
+     * @Assert\NotNull
+     * @Groups("quiz")
      */
-    private $category;
+    private Category $category;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class,inversedBy="quizzes")
      */
     private $user;
+
     /**
      * @ORM\Column(type="datetime")
      */
@@ -46,6 +60,8 @@ class Quiz
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups("quiz")
+     * @Assert\NotNull
      */
     private $expiredAt;
 
@@ -55,7 +71,9 @@ class Quiz
     private $solutions;
 
     /**
-     * @ORM\OneToMany(targetEntity=Question::class,mappedBy="quiz")
+     * @ORM\OneToMany(targetEntity=Question::class,mappedBy="quiz", cascade={"persist","remove"})
+     * @Groups("quiz")
+     * @Assert\Count(min=3)
      */
     private $questions;
 
@@ -63,11 +81,19 @@ class Quiz
     public function __construct()
     {
         $this->solutions = new ArrayCollection();
+        $this->questions =  new ArrayCollection();
+        $this->createdAt = new \DateTime();
+        $this->expiredAt = new \DateTime();
     }
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId($id): void
+    {
+        $this->id = $id;
     }
 
     public function getTitle(): ?string
@@ -138,6 +164,8 @@ class Quiz
         return $this->solutions;
     }
 
+
+
     public function addSolution(Solution $solution): self
     {
         if (!$this->solutions->contains($solution)) {
@@ -177,7 +205,7 @@ class Quiz
     }
 
     /**
-     * @return Collection
+     * @return Collection| Question[]
      */
     public function getQuestions()
     {
@@ -185,12 +213,32 @@ class Quiz
     }
 
     /**
-     * @param Collection $questions
+     * @param Collection| Question[] $questions
      */
-    public function setQuestions(Collection $questions): void
+    public function setQuestions(Collection| Array $questions): void
     {
         $this->questions = $questions;
     }
 
+    public function addQuestion(Question $question): self
+    {
+        if (!$this->questions->contains($question)) {
+            $this->questions[] = $question;
+            $question->setQuiz($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQuestion(Question $question): self
+    {
+        if ($this->questions->removeElement($question)) {
+            if ($question->getQuiz() === $this) {
+                $question->setQuiz(null);
+            }
+        }
+
+        return $this;
+    }
 
 }

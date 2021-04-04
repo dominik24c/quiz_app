@@ -2,8 +2,22 @@ import axios from "axios";
 import Validator from "./validator";
 
 export  default class Quiz{
-    constructor() {
-        $('#create-quiz-btn').click((event)=>this.createQuiz(event));
+    static CREATE_QUIZ = "create";
+    static EDIT_QUIZ = "edit";
+
+    constructor(mode=Quiz.CREATE_QUIZ) {
+        switch (mode){
+            case Quiz.CREATE_QUIZ:
+                $('#create-quiz-btn').click((event)=>this.createQuiz(event));
+                break;
+            case Quiz.EDIT_QUIZ:
+                $('#update-quiz-btn').click((event)=>this.updateQuiz(event));
+                break;
+            default:
+                throw new Error("Please choose correct mode for submit button!");
+
+        }
+
         const inputArr = [$("#title"),$("#description"),$("#expired_at")]
         inputArr.forEach(input=>{
             Validator.addOnFocusRemoveFormError(input,'form-error');
@@ -78,11 +92,11 @@ export  default class Quiz{
             if (!Validator.checkArrayLength(answers,2)){
                 $(this).parent().parent().find('.answers-error').html('<p class="form-error">At least 2 answer must be created for each question!</p>')
             }
-            questions.push({question,points,answers});
+            questions.push({question,points:parseInt(points),answers});
         });
 
         isValid.add(Validator.checkArrayLength(questions));
-        console.log(questions.length)
+        // console.log(questions.length)
         if (!Validator.checkArrayLength(questions)){
             $('#question-error').html('<p class="form-error">At least 3 questions must be created!</p>')
         }
@@ -99,16 +113,39 @@ export  default class Quiz{
             jsonData
         };
     }
+
     createQuiz(event){
         event.preventDefault();
         const data = this.scrapeData();
         if (data.isValid){
             axios
                 .post("/user/quizzes/create",data.jsonData)
-                .then(res=>console.log(res))
-                .catch(err=>console.log(err));
+                .then(response=>{
+                    //redirect
+                    if (response.status === 200){
+                        const urlArr = window.location.href.split("/");
+                        const hostname = urlArr.slice(0,3).join("/");
+                        window.location.href=`${hostname}/user/quizzes?create_quiz=true`;
+                    }
+                })
+                .catch(error=>console.log(error));
         }
+        // console.log(data.isValid);
+        // console.log(data.jsonData);
+    }
+
+    updateQuiz(event){
+        event.preventDefault();
+        const data = this.scrapeData();
+
         console.log(data.isValid);
         console.log(data.jsonData);
+
+        if (data.isValid){
+            axios
+                .post(`${window.location.pathname}`,data.jsonData)
+                .then(response=>console.log(response))
+                .catch(error=>console.log(error));
+        }
     }
 }

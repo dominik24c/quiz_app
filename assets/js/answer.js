@@ -4,20 +4,20 @@ export default class Answer{
     static  maxLength = 6;
 
     constructor(question) {
-        question.find('button.add-answer-btn').click(this.addAnswer.bind(this,question));
+        question.find('button.add-answer-btn').click(this.addAnswer.bind(this,question,null));
     }
 
-    addAnswer(question){
+    addAnswer(question, answerObj= null){
         // create answer div
         const answerDiv =`<div class="answer">
             <button type="button" class="delete-answer-btn delete-btn">x</button>
             <div class="form-control">
                 <label for="answer">Answer: </label>
-                <input type="text" name="answer">
+                <input type="text" name="answer" value="${answerObj ? answerObj.answer: ""}">
             </div>
             <div class="form-control display-inline-block">
                 <label for="isCorrect">Answer is correct: </label>
-                <input type="checkbox" name="isCorrect">
+                <input type="checkbox" name="isCorrect" value="${answerObj ? answerObj.isCorrect: ""}">
             </div>
         </div>`;
         const answers = question.find('.answers');
@@ -30,7 +30,7 @@ export default class Answer{
 
         // add delete btn handler
         this.addDeleteBtnHandler(lastAnswer);
-        if(this.maxLength <= answers.find('.answer').length){
+        if(Answer.maxLength <= answers.find('.answer').length){
             question.find('button.add-answer-btn').addClass('hidden');
         }
 

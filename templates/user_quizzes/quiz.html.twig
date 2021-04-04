@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Create Quiz{% endblock %}
+
+{% if quiz %}
+    {% set category_name = quiz.category.name %}
+{% else %}
+    {% set category_name = categories[0] %}
+{% endif %}
+
+{% block body %}
+    <h1>{{ title }}</h1>
+    <form action="" method="POST" id="form">
+        <div id="quiz">
+            <div class="form-control">
+                <label for="title">Title:</label>
+                <input type="text" name="title" id="title" value="{{ quiz ? quiz.title : "" }}">
+            </div>
+            <div class="form-control">
+                <label for="description">Description:</label>
+                <textarea name="description" id="description">{{ quiz ? quiz.description : ""}}</textarea>
+            </div>
+            <div class="form-control display-inline-block">
+                <label for="category">Category:</label>
+                <select name="category" id="category">
+                    {% for category in categories %}
+                        <option value="{{ category }}" selected="{{ category == category_name ? "selected" : "" }}">{{ category|capitalize }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-control display-inline-block">
+                <label for="expired_at">Date of expiration:</label>
+                <input type="datetime-local" id="expired_at" name="expired_at" value="{{ quiz ? quiz.expiredAt|date('Y-m-d\\TH:i') : "" }}">
+            </div>
+            <div id="questions">
+            </div>
+            <div id="question-error"></div>
+            {% if quiz %}
+                <div id="loading-spinner">
+                    <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                </div>
+            {% endif %}
+            <button type="button" class="add-btn" id="add-question-btn">Add Question</button>
+        </div>
+        <input type="hidden" name="token" value="{{ csrf_token('quiz') }}"/>
+        <button class="button" type="submit" id="update-quiz-btn">{{ btn_name }}</button>
+    </form>
+{% endblock %}
