@@ -23,24 +23,30 @@ class App{
 
     init(){
         const edit_route_regex = /^\/user\/quizzes\/.+\/edit$/;
-        console.log(edit_route_regex.test(window.location.pathname))
+        // console.log(edit_route_regex.test(window.location.pathname));
+
+        // Create quiz page
         if(window.location.pathname === "/user/quizzes/create" ){
             this.question = new Question();
             this.quiz = new Quiz();
         }
+        // Edit quiz page
         else if(edit_route_regex.test(window.location.pathname)){
             this.question = new Question();
             this.quiz = new Quiz(Quiz.EDIT_QUIZ);
             this.question.getQuestions();
         }
+        // List of user quizzes
         else if(window.location.pathname === "/user/quizzes"){
             UserQuizzes.addEditAndDeleteBtnEventHandler()
         }
         //remove query param crate_quiz
         const urlPath = window.location.protocol + "//" + window.location.host + window.location.pathname;
         window.history.pushState({ path: urlPath }, '', urlPath);
+
     }
 }
 
+// run application
 const app = new App();
 app.init();

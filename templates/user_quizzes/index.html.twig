@@ -9,6 +9,11 @@
             <h3>{{ message }}</h3>
         </div>
     {% endfor %}
+    {% for message in app.flashes('success-delete-quiz') %}
+        <div class="flash-msg red-msg">
+            <h3>{{ message }}</h3>
+        </div>
+    {% endfor %}
     {% for quiz in quizzes %}
         <div class="quiz">
             <h3>{{ quiz.title }}</h3>
@@ -16,8 +21,9 @@
             <br>
             <div class="quiz-actions" id="quiz_{{ quiz.id }}">
                 <button class="button edit-btn">Edit</button>
-                <button class="button ">Delete</button>
+                <button class="button delete-quiz-btn">Delete</button>
             </div>
         </div>
     {% endfor %}
+    {% include 'layout/paginator.html.twig' %}
 {% endblock %}

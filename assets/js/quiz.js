@@ -8,10 +8,10 @@ export  default class Quiz{
     constructor(mode=Quiz.CREATE_QUIZ) {
         switch (mode){
             case Quiz.CREATE_QUIZ:
-                $('#create-quiz-btn').click((event)=>this.createQuiz(event));
+                $('#quiz-btn').click((event)=>this.createQuiz(event));
                 break;
             case Quiz.EDIT_QUIZ:
-                $('#update-quiz-btn').click((event)=>this.updateQuiz(event));
+                $('#quiz-btn').click((event)=>this.updateQuiz(event));
                 break;
             default:
                 throw new Error("Please choose correct mode for submit button!");
@@ -25,9 +25,10 @@ export  default class Quiz{
 
     }
 
-    scrapeData(){
+    scrapeData(mode=Quiz.CREATE_QUIZ){
         const isValid = new Set();
         const q = $('#quiz');
+        const quizId= q.attr('data-index') ?? null;
 
         const titleInput = q.find('#title');
         const title = titleInput.val();
@@ -58,6 +59,8 @@ export  default class Quiz{
         const questionsDivs = q.find('.question');
 
         questionsDivs.each(function (){
+            const questionId= $(this).attr('data-index') ?? null;
+
             const questionInput = $(this).find("input[name='question']");
             const question = questionInput.val();
             Validator.validateData(
@@ -74,9 +77,10 @@ export  default class Quiz{
                 pointsInput, Validator.checkNumberInput.bind(this,points)
             )
 
-
             const answers = [];
             $(this).find('.answer').each(function (){
+                const answerId = $(this).attr('data-index') ?? null;
+
                 const answerInput = $(this).find("input[name='answer']");
                 const answer = answerInput.val();
                 Validator.validateData(
@@ -86,13 +90,14 @@ export  default class Quiz{
                 );
 
                 const isCorrect = $(this).find("input[name='isCorrect']").is(':checked');
-                answers.push({answer,isCorrect});
+
+                answers.push({id:answerId,answer,isCorrect});
             });
             isValid.add(Validator.checkArrayLength(answers,2));
             if (!Validator.checkArrayLength(answers,2)){
                 $(this).parent().parent().find('.answers-error').html('<p class="form-error">At least 2 answer must be created for each question!</p>')
             }
-            questions.push({question,points:parseInt(points),answers});
+            questions.push({id:questionId,question, points:parseInt(points), answers});
         });
 
         isValid.add(Validator.checkArrayLength(questions));
@@ -101,16 +106,18 @@ export  default class Quiz{
             $('#question-error').html('<p class="form-error">At least 3 questions must be created!</p>')
         }
 
-        const jsonData = JSON.stringify({
+        const jsonData = {
+            id:quizId,
             title,
             description,
             category,
             expiredAt,
             questions
-        });
+        };
+
         return {
             "isValid": !isValid.has(false),
-            jsonData
+            "jsonData":JSON.stringify(jsonData)
         };
     }
 
@@ -130,13 +137,13 @@ export  default class Quiz{
                 })
                 .catch(error=>console.log(error));
         }
-        // console.log(data.isValid);
-        // console.log(data.jsonData);
+        console.log(data.isValid);
+        console.log(data.jsonData);
     }
 
     updateQuiz(event){
         event.preventDefault();
-        const data = this.scrapeData();
+        const data = this.scrapeData(Quiz.EDIT_QUIZ);
 
         console.log(data.isValid);
         console.log(data.jsonData);

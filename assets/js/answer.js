@@ -28,6 +28,11 @@ export default class Answer{
         Validator.addOnFocusRemoveFormError(lastAnswer.find('input[name="answer"]'),'form-error');
         lastAnswer.parent().parent().find('.answers-error').html('');
 
+        //add data-index attribute
+        if (answerObj){
+            lastAnswer.attr('data-index',answerObj.id);
+        }
+
         // add delete btn handler
         this.addDeleteBtnHandler(lastAnswer);
         if(Answer.maxLength <= answers.find('.answer').length){

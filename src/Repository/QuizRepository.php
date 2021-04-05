@@ -4,11 +4,13 @@ namespace App\Repository;
 
 use App\Entity\Quiz;
 use App\Entity\Solution;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @method Quiz|null find($id, $lockMode = null, $lockVersion = null)
@@ -37,6 +39,19 @@ class QuizRepository extends ServiceEntityRepository
             ->getQuery()
             ->getScalarResult();
     }
+
+    public function getQuizzesByUser(UserInterface $user,$pageSize,$offset)
+    {
+        return $this->createQueryBuilder('q')
+            ->where('q.user = :user_id')
+            ->setParameter('user_id',$user->getId())
+            ->orderBy('q.createdAt','DESC')
+            ->setMaxResults($pageSize)
+            ->setFirstResult($offset)
+            ->getQuery()
+            ->getResult();
+    }
+
     // /**
     //  * @return Quiz[] Returns an array of Quiz objects
     //  */

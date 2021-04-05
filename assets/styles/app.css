@@ -11,13 +11,14 @@ c7ffd8
 *{
     margin: 0;
 }
+
 html {
-    height: 100%;
+    width: 100%;
     box-sizing: border-box;
 }
 
 body {
-    height: 100%;
+    width: 100%;
     background-color: #c7ffd8;
     color: #000000;
     font-family: 'Poppins', sans-serif;;
@@ -295,6 +296,31 @@ p.form-error{
     font-family: inherit;
 }
 
+.red-msg{
+    background-color: #f8706c;
+    border: 3px solid red;
+
+}
+
+.red-msg > h3{
+    color: red;
+}
+
+a.next-btn{
+    font-family: inherit;
+    font-size: 1.3rem;
+    text-decoration: none;
+    color: white;
+    background-color: #161d6f;
+    border: 2px solid white;
+    border-radius: 5px;
+    padding: 0.3rem 1rem;
+}
+
+a.next-btn:hover,
+a.next-btn:active{
+ background-color: #2b2a2a;
+}
 
 
 /*Loading Spinner*/

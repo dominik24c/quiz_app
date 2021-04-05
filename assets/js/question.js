@@ -43,6 +43,7 @@ export default class Question{
 
         if(questionObj){
             console.log(questionObj)
+            lastQuestion.attr('data-index',questionObj.id);
             const answer = new Answer(lastQuestion);
             questionObj.answers.forEach(answerObj=>{
                 // console.log(answerObj)
@@ -59,6 +60,7 @@ export default class Question{
        axios.get(`${window.location.pathname}/quiz-data`)
            .then(response=> {
                console.log(response.data);
+               $('#quiz').attr('data-index',response.data.id)
                const questions = response.data.questions;
                questions.forEach(question=>{
                     this.addQuestion(question);
