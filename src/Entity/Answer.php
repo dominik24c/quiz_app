@@ -19,7 +19,7 @@ class Answer
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups("edit_quiz")
+     * @Groups("edit_quiz","solve_quiz")
      */
     private $id;
 
@@ -59,6 +59,11 @@ class Answer
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId(int $id): void
+    {
+        $this->id = $id;
     }
 
     public function getAnswer(): ?string

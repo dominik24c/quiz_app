@@ -4,11 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Category;
 use App\Entity\Quiz;
-use App\Entity\User;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,11 +39,16 @@ class UserQuizzesController extends AbstractController
         $quizzes =  $this->getDoctrine()->getRepository(Quiz::class)
             ->getQuizzesByUser($user,$pageSize,$pageSize*$numOfPage);
 
+        $urlPrevPage = $this->generateUrl('quizzes',['page'=>$numOfPage-1]);
+        $urlNextPage = $this->generateUrl('quizzes',['page'=>$numOfPage+1]);
+
         return $this->render('user_quizzes/index.html.twig',[
             'quizzes'=>$quizzes,
             'numOfPage'=>$numOfPage,
             'pages'=>$pages,
-            'items'=>$items
+            'items'=>$items,
+            'urlPrevPage'=>$urlPrevPage,
+            'urlNextPage'=>$urlNextPage
         ]);
     }
 
@@ -66,7 +68,8 @@ class UserQuizzesController extends AbstractController
     public function store(Request $request, SerializerInterface $serializer, LoggerInterface $logger, ValidatorInterface $validator):Response
     {
         try{
-            $quiz = $this->deserializeQuizData($request->getContent(),$this->getUser(),$serializer,$validator,$logger);
+            $quiz = $this->deserializeQuizData($request->getContent(),$this->getUser(),$serializer,$validator,$logger,
+            ["quiz","question","answer"]);
             $em = $this->getDoctrine()->getManager();
             $em->persist($quiz);
             $em->flush();
@@ -108,7 +111,10 @@ class UserQuizzesController extends AbstractController
     {
         try{
             $this->checkQuizOwner($quiz,$this->getUser(),'You can edit only own quiz!');
-            $updatedQuiz = $this->deserializeQuizData($request->getContent(),$this->getUser(),$serializer,$validator,$logger);
+            $this->getDoctrine()->getManager()->initializeObject($quiz);
+            $updatedQuiz = $this->deserializeQuizData($request->getContent(),$this->getUser(),$serializer,$validator,$logger,[
+                "quiz","question","answer","edit-quiz"
+            ]);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($updatedQuiz);
@@ -118,7 +124,7 @@ class UserQuizzesController extends AbstractController
             return $this->json(["message"=>"Something went wrong!"],JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
 
-        return $this->json(['message'=>"Quiz was updated!"]);
+        return $this->json(['message'=>"Quiz was updated!",'id'=>$quiz->getId()]);
 
     }
 
@@ -149,12 +155,14 @@ class UserQuizzesController extends AbstractController
     public function deserializeQuizData(string $data, UserInterface $user,
                                         SerializerInterface $serializer,
                                         ValidatorInterface $validator,
-                                        LoggerInterface $logger
-                                        ):JsonResponse| Quiz
+                                        LoggerInterface $logger,
+                                        array $groups,
+                                        array $context=[]):JsonResponse| Quiz
     {
-        $quiz = $serializer->deserialize($data,Quiz::class,'json',[
-            ObjectNormalizer::GROUPS=>["quiz","question","answer"]
-        ]);
+
+        $objectNormalizer = [ObjectNormalizer::GROUPS=>$groups];
+        $context = array_merge($objectNormalizer,$context);
+        $quiz = $serializer->deserialize($data,Quiz::class,'json',$context);
         $categoryName = json_decode($data,true)["category"];
         $quiz->setCategory($this->getDoctrine()->getRepository(Category::class)->findOneBy(['name'=>$categoryName]));
         $quiz->setUser($user);

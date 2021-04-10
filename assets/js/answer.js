@@ -17,7 +17,7 @@ export default class Answer{
             </div>
             <div class="form-control display-inline-block">
                 <label for="isCorrect">Answer is correct: </label>
-                <input type="checkbox" name="isCorrect" value="${answerObj ? answerObj.isCorrect: ""}">
+                <input type="checkbox" name="isCorrect">
             </div>
         </div>`;
         const answers = question.find('.answers');
@@ -31,6 +31,9 @@ export default class Answer{
         //add data-index attribute
         if (answerObj){
             lastAnswer.attr('data-index',answerObj.id);
+            if(answerObj.isCorrect){
+                lastAnswer.find('input[type="checkbox"]').attr('checked','checked');
+            }
         }
 
         // add delete btn handler

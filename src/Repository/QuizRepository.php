@@ -52,32 +52,25 @@ class QuizRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    // /**
-    //  * @return Quiz[] Returns an array of Quiz objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function getQuizzesByTitle($flag=true,$pageSize = 5,$offset=0,$title=null)
     {
-        return $this->createQueryBuilder('q')
-            ->andWhere('q.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('q.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $queryBuilder = $this->createQueryBuilder('q');
 
-    /*
-    public function findOneBySomeField($value): ?Quiz
-    {
-        return $this->createQueryBuilder('q')
-            ->andWhere('q.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        if($title != null){
+            $title .= "%";
+            $queryBuilder
+                ->where('q.title LIKE :title')
+                ->setParameter('title',$title);
+        }
+
+        $queryBuilder->orderBy('q.createdAt','DESC');
+
+        if($flag){
+            $queryBuilder->setMaxResults($pageSize)->setFirstResult($offset);
+        }
+
+        return $queryBuilder
+                ->getQuery()
+                ->getResult();
     }
-    */
 }

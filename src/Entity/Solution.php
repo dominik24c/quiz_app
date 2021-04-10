@@ -47,6 +47,8 @@ class Solution
 
     public function __construct()
     {
+        $this->createdAt = new \DateTime();
+        $this->points = 0;
         $this->answers = new ArrayCollection();
     }
 

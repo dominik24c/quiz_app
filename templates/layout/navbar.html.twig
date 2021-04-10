@@ -7,7 +7,7 @@
     <nav id="navbar">
         <ul>
             {% if is_granted('IS_AUTHENTICATED_FULLY')%}
-                <li><a href="{{ path('quiz') }}">Quiz</a></li>
+                <li><a href="{{ path('quizzes') }}">Quiz</a></li>
                 <li><a href="{{ path('user_quizzes') }}">Your Quizzes</a></li>
                 <li><a href="{{ path('create_quiz') }}">Create Quiz</a></li>
                 <li><a href="{{ path('app_logout') }}">Logout</a></li>

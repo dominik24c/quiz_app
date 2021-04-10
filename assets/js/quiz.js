@@ -137,21 +137,24 @@ export  default class Quiz{
                 })
                 .catch(error=>console.log(error));
         }
-        console.log(data.isValid);
-        console.log(data.jsonData);
+        // console.log(data.isValid);
+        // console.log(data.jsonData);
     }
 
     updateQuiz(event){
         event.preventDefault();
         const data = this.scrapeData(Quiz.EDIT_QUIZ);
 
-        console.log(data.isValid);
-        console.log(data.jsonData);
+        // console.log(data.isValid);
+        // console.log(data.jsonData);
 
         if (data.isValid){
             axios
                 .post(`${window.location.pathname}`,data.jsonData)
-                .then(response=>console.log(response))
+                .then(response=>{
+                    console.log(response);
+                    window.location.pathname = '/user/quizzes';
+                })
                 .catch(error=>console.log(error));
         }
     }

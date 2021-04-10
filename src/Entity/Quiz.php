@@ -72,7 +72,7 @@ class Quiz
 
     /**
      * @ORM\OneToMany(targetEntity=Question::class,mappedBy="quiz", cascade={"persist","remove"})
-     * @Groups("quiz")
+     * @Groups("quiz","solve_quiz")
      * @Assert\Count(min=3)
      */
     private $questions;
@@ -91,7 +91,7 @@ class Quiz
         return $this->id;
     }
 
-    public function setId($id): void
+    public function setId(int $id): void
     {
         $this->id = $id;
     }

@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Solve Quiz!{% endblock %}
+
+{% block body %}
+    <div id="quiz">
+        <h1>{{ quiz.title }}</h1>
+        <div class="quiz" id="description">
+            <p>{{ quiz.description }}</p>
+            <br/>
+            <p>Number of questions: {{ quiz.questions|length }}</p>
+            <div>Category: <b>{{ quiz.category.name }}</b></div>
+            <div>Solved by: <b>{{ quiz.solutions|length }}</b> users</div>
+            <br>
+            <br>
+            <i>{{ quiz.createdAt|date("H:m:s d/m/Y") }}</i>
+            <br>
+            <button type="button" id="start-quiz-btn" class="button">Start</button>
+        </div>
+        <div id="questions">
+        </div>
+    </div>
+{% endblock %}

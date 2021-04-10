@@ -208,12 +208,23 @@ h1,h2,h3,h4,p{
 
 .quiz > div{
     display: inline-block;
-    width: calc(50% - 3rem);
+    width: calc(50% - 0.5rem);
 }
+
+.quiz > div:nth-child(2){
+    text-align: right;
+}
+
+#start-quiz-btn{
+    display: flex;
+    margin-right: auto;
+    margin-left: auto;
+}
+
 button.delete-btn{
     font-weight: bold;
     color:red;
-    background-color: inherit;
+    background-color: #df6060;
     outline:none;
     border: 2px solid red;
     cursor: pointer;
@@ -320,6 +331,20 @@ a.next-btn{
 a.next-btn:hover,
 a.next-btn:active{
  background-color: #2b2a2a;
+}
+
+#questions{
+    width: 80%;
+    text-align: left;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#questions > #question > button{
+    margin-top: 1rem;
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 

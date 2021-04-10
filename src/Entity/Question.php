@@ -18,7 +18,7 @@ class Question
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups("edit_quiz")
+     * @Groups("edit_quiz","solve_quiz")
      */
     private $id;
 
@@ -41,7 +41,7 @@ class Question
 
     /**
      * @ORM\OneToMany(targetEntity=Answer::class, mappedBy="question",cascade={"persist","remove"})
-     * @Groups("question")
+     * @Groups("question","solve_quiz")
      * @Assert\Count(min=2)
      */
     private $answers;

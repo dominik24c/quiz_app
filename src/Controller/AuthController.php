@@ -32,7 +32,7 @@ class AuthController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils,Request $request): Response
     {
          if ($this->getUser()) {
-             return $this->redirectToRoute('quiz');
+             return $this->redirectToRoute('quizzes');
          }
 
          $error =null;

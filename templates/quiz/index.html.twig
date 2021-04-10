@@ -1,7 +1,19 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello QuizController!{% endblock %}
+{% block title %}Quizzes!{% endblock %}
 
 {% block body %}
-    <h3>Quiz</h3>
+    <h1>Quizzes</h1>
+    {% include 'layout/search_input.html.twig' %}
+    {% for quiz in quizzes %}
+        <div class="quiz">
+            <h3>{{ quiz.title }}</h3>
+            <p>{{ quiz.description | slice(0,200) ~ '...' }}</p>
+            <br>
+            <div class="quiz-actions" id="quiz_{{ quiz.id }}">
+                <button class="button solve-btn">Solve Quiz</button>
+            </div>
+        </div>
+    {% endfor %}
+    {% include 'layout/paginator.html.twig' %}
 {% endblock %}
