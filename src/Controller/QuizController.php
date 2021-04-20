@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\Exception\JsonException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -19,8 +21,12 @@ use Symfony\Component\Serializer\SerializerInterface;
 class QuizController extends AbstractController
 {
     #[Route('', name: 'quizzes')]
-    public function index(Request $request): Response
+    public function index(Request $request, SessionInterface $session): Response
     {
+        $session->start();
+        $solutionMsg = $session->get('solution');
+        $session->clear();
+
         $numOfPage = $request->query->get('page');
         $searchedTitle = $request->query->get('search');
 
@@ -46,6 +52,7 @@ class QuizController extends AbstractController
         $urlNextPage = $this->generateUrl('quizzes',['page'=>$numOfPage+1, 'search'=>$searchedTitle]);
 
         return $this->render('quiz/index.html.twig',[
+            'solutionMsg'=> $solutionMsg,
             'quizzes'=>$quizzes,
             'numOfPage'=>$numOfPage,
             'pages'=>$pages,
@@ -64,7 +71,8 @@ class QuizController extends AbstractController
     }
 
     #[Route('/{quiz}/solve', name: 'user_solution', methods: ['POST'])]
-    public function saveUserSolution(Quiz $quiz, Request $request,LoggerInterface $logger): JsonResponse
+    public function saveUserSolution(Quiz $quiz, Request $request,LoggerInterface $logger,
+    Session $session): JsonResponse
     {
         try{
             $answersId = json_decode($request->getContent());
@@ -90,6 +98,9 @@ class QuizController extends AbstractController
             $logger->error($exception->getMessage());
             return $this->json(['message'=>'Cannot create solution'],400);
         }
+
+        $session->start();
+        $session->set('solution', 'solutions was saved');
 
         return $this->json(['message'=>'Solution was added!']);
     }

@@ -21,7 +21,6 @@ class App{
     constructor() {
         this.question = null;
         this.quiz = null;
-        this.solutionOfQuiz = null;
     }
 
     init(){
@@ -54,9 +53,6 @@ class App{
         else if(solve_quiz_route_regex.test(window.location.pathname)){
             SolutionOfQuiz.addStartQuizClickHandler();
         }
-        //remove query param crate_quiz
-        const urlPath = window.location.protocol + "//" + window.location.host + window.location.pathname;
-        window.history.pushState({ path: urlPath }, '', urlPath);
 
     }
 }

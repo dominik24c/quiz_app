@@ -132,7 +132,7 @@ export  default class Quiz{
                     if (response.status === 200){
                         const urlArr = window.location.href.split("/");
                         const hostname = urlArr.slice(0,3).join("/");
-                        window.location.href=`${hostname}/user/quizzes?create_quiz=true`;
+                        window.location.href=`${hostname}/user/quizzes`;
                     }
                 })
                 .catch(error=>console.log(error));

@@ -4,6 +4,12 @@
 
 {% block body %}
     <h1>Quizzes</h1>
+    {% if solutionMsg %}
+        <div class="flash-msg">
+            <h3>{{ solutionMsg }}</h3>
+        </div>
+    {% endif %}
+
     {% include 'layout/search_input.html.twig' %}
     {% for quiz in quizzes %}
         <div class="quiz">

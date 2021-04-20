@@ -115,6 +115,7 @@ export default class SolutionOfQuiz{
                 .then(response=>{
                     console.dir(response.data);
                     //redirect
+                    window.location.pathname =  `quiz`;
                 })
                 .catch(error=>{
                     console.log(error);

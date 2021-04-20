@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -20,8 +21,12 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class UserQuizzesController extends AbstractController
 {
     #[Route('', name: 'user_quizzes')]
-    public function index(Request $request): Response
+    public function index(Request $request, SessionInterface $session): Response
     {
+        $session->start();
+        $quizMsg = $session->get('quiz-msg');
+        $session->clear();
+
         $pageSize = 5;
         $numOfPage = $request->query->get('page');
         $items = count($this->getUser()->getQuizzes());
@@ -29,10 +34,6 @@ class UserQuizzesController extends AbstractController
 
         if($numOfPage >= $pages){
             $numOfPage = $pages;
-        }
-
-        if ($request->query->get('create_quiz') == "true"){
-            $this->addFlash('success-create-quiz',"Quiz was created!");
         }
 
         $user = $this->getUser();
@@ -43,6 +44,7 @@ class UserQuizzesController extends AbstractController
         $urlNextPage = $this->generateUrl('quizzes',['page'=>$numOfPage+1]);
 
         return $this->render('user_quizzes/index.html.twig',[
+            'quizMsg'=>$quizMsg,
             'quizzes'=>$quizzes,
             'numOfPage'=>$numOfPage,
             'pages'=>$pages,
@@ -65,14 +67,18 @@ class UserQuizzesController extends AbstractController
     }
 
     #[Route('/create',name: 'store_quiz',methods: ['POST'])]
-    public function store(Request $request, SerializerInterface $serializer, LoggerInterface $logger, ValidatorInterface $validator):Response
+    public function store(Request $request, SerializerInterface $serializer,
+                          LoggerInterface $logger, ValidatorInterface $validator,
+                          SessionInterface $session):Response
     {
+        $session->start();
         try{
             $quiz = $this->deserializeQuizData($request->getContent(),$this->getUser(),$serializer,$validator,$logger,
             ["quiz","question","answer"]);
             $em = $this->getDoctrine()->getManager();
             $em->persist($quiz);
             $em->flush();
+            $session->set('quiz-msg', 'Quiz was created!');
         }catch (\Throwable $exception){
 //            $logger->error($exception->getMessage());
             return $this->json(["message"=>"Something went wrong!"],JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
