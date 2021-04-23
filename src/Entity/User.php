@@ -41,7 +41,7 @@ class User implements UserInterface
     /**
      * @ORM\Column (type="string",length=50,unique=true)
      * @Assert\NotBlank
-     * @Assert\Length(min=5, max=50)
+     * @Assert\Length(min=4, max=50)
      */
     private $nick;
 

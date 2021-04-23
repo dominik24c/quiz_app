@@ -29,7 +29,7 @@ class AuthController extends AbstractController
     /**
      * @Route("/login", name="app_login")
      */
-    public function login(AuthenticationUtils $authenticationUtils,Request $request): Response
+    public function login(AuthenticationUtils $authenticationUtils,Request $request, ReCaptcha $recaptcha): Response
     {
          if ($this->getUser()) {
              return $this->redirectToRoute('quizzes');
@@ -37,7 +37,6 @@ class AuthController extends AbstractController
 
          $error =null;
          $lastUsername = null;
-         $recaptcha = new ReCaptcha($this->getParameter('google_recaptcha_secret'));
          $response = $recaptcha->verify($request->request->get('g-recaptcha-response'),$request->getClientIp());
         // get the login error if there is one
         if (!$response->isSuccess()) {
@@ -64,13 +63,12 @@ class AuthController extends AbstractController
     /**
      * @Route("/register", name="app_register")
      */
-    public function register(Request $request)
+    public function register(Request $request, ReCaptcha $recaptcha)
     {
         $user = new User();
         $form = $this->createForm(RegistrationType::class,$user);
         $form->handleRequest($request);
 
-        $recaptcha = new ReCaptcha($this->getParameter('google_recaptcha_secret'));
         $response = $recaptcha->verify($request->request->get('g-recaptcha-response'),$request->getClientIp());
 
         if($form->isSubmitted()){

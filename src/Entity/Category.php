@@ -20,7 +20,7 @@ class Category
      * @ORM\Id
      * @ORM\Column(type="string",length=40)
      * @Assert\NotNull
-     * @Assert\Length(min=1,max=40)
+     * @Assert\Length(min=4,max=40)
      * @Groups("category")
      */
     private $name;
