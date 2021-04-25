@@ -5,6 +5,7 @@ namespace App\Tests\Entity;
 
 
 use App\Tests\DatabasePrimer;
+use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Validator\ContainerConstraintValidatorFactory;
@@ -28,7 +29,10 @@ class EntityTest extends KernelTestCase
     protected function tearDown(): void
     {
         parent::tearDown();
+        $purger = new ORMPurger($this->entityManager);
+        $purger->purge();
         $this->entityManager->close();
         $this->entityManager = null;
+
     }
 }

@@ -21,7 +21,7 @@ class QuestionTest extends EntityTest
         $this->entityManager->persist($question);
         $this->entityManager->flush();
 
-        $questionRecord = $this->entityManager->getRepository(Question::class)->findOneBy(['points'=>1]);
+        $questionRecord = $this->entityManager->getRepository(Question::class)->findOneBy(['question'=>'How many sides does a triangle have?']);
 
         //assert
         $this->assertInstanceOf(Question::class, $questionRecord);

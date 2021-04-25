@@ -65,11 +65,15 @@ class AuthController extends AbstractController
      */
     public function register(Request $request, ReCaptcha $recaptcha)
     {
+        if ($this->getUser()) {
+            return $this->redirectToRoute('quizzes');
+        }
+
         $user = new User();
         $form = $this->createForm(RegistrationType::class,$user);
         $form->handleRequest($request);
-
         $response = $recaptcha->verify($request->request->get('g-recaptcha-response'),$request->getClientIp());
+        $flagError = false;
 
         if($form->isSubmitted()){
             if($form->get('password')->getData() !=
@@ -91,14 +95,23 @@ class AuthController extends AbstractController
                 $this->addFlash('registration-success','You account was created! Please login.');
                 return $this->redirect($this->generateUrl('app_login'));
             }
+            $flagError = true;
         }
 
         $keys = array('firstName','lastName','nick','email','password','passwordConfirmation','agreeTerms');
 
-        return $this->render('security/registration.html.twig',[
+        $view = $this->renderView('security/registration.html.twig',[
             'form'=>$form->createView(),
             'google_site_key'=>$this->getParameter('google_recaptcha_site_key'),
             'form_keys' => $keys
         ]);
+
+        if($flagError){
+            $statusCode = 400;
+        }else{
+            $statusCode = 200;
+        }
+
+        return new Response($view,$statusCode);
     }
 }

@@ -25,7 +25,7 @@ class AnswerRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('a')
             ->select('a')
             ->join('a.question','qu')
-            ->join('qu.quiz','q')
+            ->join('qu.quiz','q',)
             ->where('q.id = :quiz_id')
             ->setParameter('quiz_id',$quiz->getId())
             ->getQuery()

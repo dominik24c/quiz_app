@@ -1,0 +1,11 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: true
+
+  App\Tests\FakeData\FakeRecaptcha: ~
+  ReCaptcha\ReCaptcha:
+    class: App\Tests\FakeData\FakeRecaptcha
+    arguments:
+      $secret: "secret"
