@@ -60,7 +60,7 @@ class Helper
 
     static public function createDummyQuiz(Category $category, string $title = "New Quiz",
                                     string $description = "example of description 1234 lorem ipsum",
-                                    \DateTime $expiredAt = null):Quiz
+                                    \DateTime $expiredAt = null,User $user = null):Quiz
     {
         $createdAt = new \DateTime();
 
@@ -74,6 +74,9 @@ class Helper
         $quiz->setCategory($category);
         $quiz->setCreatedAt($createdAt);
         $quiz->setExpiredAt($expiredAt);
+        if($user != null){
+            $quiz->setUser($user);
+        }
 
         return $quiz;
 
@@ -95,10 +98,17 @@ class Helper
         return $answer;
     }
 
-    static public function createDummySolution(int $points = 1)
+    static public function createDummySolution(int $points = 1, User $user = null, Quiz $quiz = null)
     {
         $solution = new Solution();
         $solution->setPoints($points);
+
+        if($user !=null){
+            $solution->setUser($user);
+        }
+        if($quiz !=null){
+            $solution->setQuiz($quiz);
+        }
 
         return $solution;
     }

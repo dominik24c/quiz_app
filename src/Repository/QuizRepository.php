@@ -30,7 +30,7 @@ class QuizRepository extends ServiceEntityRepository
             ->join('s.quiz','q')
             ->join('q.category','c')
             ->groupBy('q.id')
-            ->orderBy('solved_quizzes','ASC')
+            ->orderBy('solved_quizzes','DESC')
             ->setMaxResults($numberOfQuizzes)
             ->getQuery()
             ->getScalarResult();
