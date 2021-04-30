@@ -3,46 +3,18 @@
 
 namespace App\Tests\Controller;
 
-
-use App\Entity\User;
-use App\Repository\UserRepository;
-use App\Tests\Entity\Helper;
 use App\Tests\FakeData\FakeRecaptcha;
-use Doctrine\Common\DataFixtures\Purger\ORMPurger;
-use Doctrine\ORM\EntityManagerInterface;
 use ReCaptcha\ReCaptcha;
-use Symfony\Bundle\FrameworkBundle\KernelBrowser;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class AuthControllerTest extends WebTestCase
+class AuthControllerTest extends BaseControllerTest
 {
-    private EntityManagerInterface | null $entityManager;
-    private KernelBrowser $client;
-    private User $user;
-    static private string $EMAIL ='jamesnelson@gmail.com';
-    static private string $PASSWORD = 'Pass1234';
     protected function setUp(): void
     {
         parent::setUp();
-        $this->client = static::createClient();
-        $this->entityManager = static::$kernel->getContainer()->get('doctrine.orm.entity_manager');
-        $this->user = Helper::createDummyUser();
-        $this->entityManager->persist($this->user);
-        $this->entityManager->flush();
-        $userRepository = static::$container->get(UserRepository::class);
-        $this->user = $userRepository->findOneByEmail(self::$EMAIL);
+        $this->createUser();
 
         $fakerecaptcha = new FakeRecaptcha();
         static::$container->set(ReCaptcha::class, $fakerecaptcha);
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-        $purger = new ORMPurger($this->entityManager);
-        $purger->purge();
-        $this->entityManager->close();
-        $this->entityManager = null;
     }
 
     //Login Page

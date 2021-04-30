@@ -3,9 +3,6 @@
 
 namespace App\Tests\Controller;
 
-use App\Repository\QuizRepository;
-use App\Tests\Entity\Helper;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

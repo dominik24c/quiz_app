@@ -15,33 +15,7 @@ class QuizRepositoryTest extends EntityTest
     public function testGetTheMostPopularQuizzes()
     {
         //arrange
-        $user = Helper::createDummyUser();
-        $category = Helper::createDummyCategory();
-
-        $this->entityManager->persist($user);
-        $this->entityManager->persist($category);
-
-        $quizzesData =[
-            ['title'=>'quiz1','numberOfSolvedQuiz'=>9],
-            ['title'=>'quiz2','numberOfSolvedQuiz'=>3],
-            ['title'=>'quiz3','numberOfSolvedQuiz'=>1]
-        ];
-        $titles = array();
-        $quizzes = array();
-
-        foreach ($quizzesData as $q){
-            $titles[]= $q['title'];
-            $quiz = Helper::createDummyQuiz($category,$q['title']);
-            $quizzes[] = $quiz;
-            $this->entityManager->persist($quiz);
-        }
-        for($i=0;$i<count($quizzes);$i++){
-            for($j=0; $j<$quizzesData[$i]['numberOfSolvedQuiz'];$j++){
-                $this->entityManager->persist(Helper::createDummySolution(user: $user, quiz: $quizzes[$i]));
-            }
-        }
-
-        $this->entityManager->flush();
+        DummyDataForRepository::createDummyDataForGetTheMostPopularQuizzes($this->entityManager);
 
         //act
         $quizzes2 =$this->entityManager->getRepository(Quiz::class)
@@ -53,11 +27,11 @@ class QuizRepositoryTest extends EntityTest
 
         $this->assertIsArrayAndNotEmpty($quizzes2);
         $this->assertCount(2,$quizzes2);
-        $this->assertTitleQuizzes($quizzes2,$titles,false);
+        $this->assertTitleQuizzes($quizzes2,DummyDataForRepository::$titles,false);
 
         $this->assertIsArrayAndNotEmpty($quizzes3);
         $this->assertCount(3,$quizzes3);
-        $this->assertTitleQuizzes($quizzes3,$titles,false);
+        $this->assertTitleQuizzes($quizzes3,DummyDataForRepository::$titles,false);
     }
 
     /** @test */
@@ -116,16 +90,7 @@ class QuizRepositoryTest extends EntityTest
     {
         //arrange
         $searchedTitle = 'Quiz';
-        $searchedQuizzesTitle = ['Quiz', 'Quiz A', 'QuizB','QuizC','QuizD','QuizE2'];
-        $quizzesTitles = array_merge($searchedQuizzesTitle, ['1Quiz', '2Quiz','Title']);
-
-        $category = Helper::createDummyCategory();
-        $this->entityManager->persist($category);
-
-        foreach ($quizzesTitles as $title){
-            $this->entityManager->persist(Helper::createDummyQuiz($category,$title));
-        }
-        $this->entityManager->flush();
+        DummyDataForRepository::createDummyDataForGetQuizzesByTitle($this->entityManager);
 
         //act
         $quizzesArr1 = $this->entityManager->getRepository(Quiz::class)
@@ -154,10 +119,10 @@ class QuizRepositoryTest extends EntityTest
         $this->assertCount(2,$quizzesArr3);
 
         $this->assertIsArrayAndNotEmpty($quizzesArr4);
-        $this->assertCount(count($quizzesTitles),$quizzesArr4);
+        $this->assertCount(count(DummyDataForRepository::$titlesForQuizRoute),$quizzesArr4);
 
         $this->assertIsArrayAndNotEmpty($quizzesArr5);
-        $this->assertCount(count($searchedQuizzesTitle),$quizzesArr5);
+        $this->assertCount(count(DummyDataForRepository::$searchedTitlesForQuizRoute),$quizzesArr5);
     }
 
     public function assertIsArrayAndNotEmpty(array $arr):void

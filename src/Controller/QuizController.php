@@ -44,7 +44,6 @@ class QuizController extends AbstractController
             $numOfPage = $pages;
         }
 
-
         $quizzes =  $this->getDoctrine()->getRepository(Quiz::class)
             ->getQuizzesByTitle(true,$pageSize,$pageSize*$numOfPage,$searchedTitle);
 
@@ -71,9 +70,10 @@ class QuizController extends AbstractController
     }
 
     #[Route('/{quiz}/solve', name: 'user_solution', methods: ['POST'])]
-    public function saveUserSolution(Quiz $quiz, Request $request,LoggerInterface $logger,
-    Session $session): JsonResponse
+    public function saveUserSolution(Quiz $quiz, Request $request, LoggerInterface $logger,
+                                     SessionInterface $session): JsonResponse
     {
+
         try{
             $answersId = json_decode($request->getContent());
             if($answersId ==null){
