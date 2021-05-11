@@ -5,16 +5,19 @@
         </a>
     </div>
     <nav id="navbar">
-        <ul>
+        <ul id="navbar_hidden">
+            <li><a class="bars"><i class="fas fa-bars" style="color: white; font-size: 1.7rem"></i></a></li>
+        </ul>
+        <ul id="navbar_full">
             {% if is_granted('IS_AUTHENTICATED_FULLY')%}
-                <li><a href="{{ path('quizzes') }}">Quiz</a></li>
-                <li><a href="{{ path('user_quizzes') }}">Your Quizzes</a></li>
-                <li><a href="{{ path('create_quiz') }}">Create Quiz</a></li>
-                <li><a href="{{ path('app_logout') }}">Logout</a></li>
+                <li class="link"><a href="{{ path('quizzes') }}">Quiz</a></li>
+                <li class="link"><a href="{{ path('user_quizzes') }}">Your Quizzes</a></li>
+                <li class="link"><a href="{{ path('create_quiz') }}">Create Quiz</a></li>
+                <li class="link"><a href="{{ path('app_logout') }}">Logout</a></li>
             {% else %}
-                <li><a href="{{ path('contact') }}">Contact</a></li>
-                <li><a href="{{ path('app_login') }}">Login</a></li>
-                <li><a href="{{ path('app_register') }}">Register</a></li>
+                <li class="link"><a href="{{ path('contact') }}">Contact</a></li>
+                <li class="link"><a href="{{ path('app_login') }}">Login</a></li>
+                <li class="link"><a href="{{ path('app_register') }}">Register</a></li>
             {% endif %}
         </ul>
     </nav>

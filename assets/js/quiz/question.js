@@ -1,5 +1,5 @@
 import Answer from "./answer";
-import Validator from "./validator";
+import Validator from "../utils/validator";
 import axios from "axios";
 
 export default class Question{

@@ -1,4 +1,4 @@
-import Validator from "./validator";
+import Validator from "../utils/validator";
 
 export default class Answer{
     static  maxLength = 6;

@@ -1,5 +1,5 @@
 import axios from "axios";
-import Validator from "./validator";
+import Validator from "../utils/validator";
 
 export  default class Quiz{
     static CREATE_QUIZ = "create";

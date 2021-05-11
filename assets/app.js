@@ -11,11 +11,13 @@ import './styles/app.css';
 // start the Stimulus application
 import './bootstrap';
 
-import Question from "./js/question";
-import Quiz from "./js/quiz";
-import Quizzes from "./js/quizzes";
-import SearchInput from "./js/search-input";
-import SolutionOfQuiz from "./js/solution-of-quiz";
+
+import Question from "./js/quiz/question";
+import Quiz from "./js/quiz/quiz";
+import Quizzes from "./js/quiz/quizzes";
+import SearchInput from "./js/utils/search-input";
+import SolutionOfQuiz from "./js/quiz/solution-of-quiz";
+import Navbar from './js/utils/navbar';
 
 class App{
     constructor() {
@@ -24,6 +26,9 @@ class App{
     }
 
     init(){
+        //rwd navbar
+        Navbar.addNavbar();
+
         const edit_route_regex = /^\/user\/quizzes\/.+\/edit$/;
         const solve_quiz_route_regex = /^\/quiz\/.+\/solve$/;
         // console.log(edit_route_regex.test(window.location.pathname));
