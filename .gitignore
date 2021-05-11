@@ -10,7 +10,6 @@
 ###< symfony/framework-bundle ###
 
 .idea
-.env
 .env.test
 ###> symfony/webpack-encore-bundle ###
 /node_modules/
